@@ -1,0 +1,32 @@
+name: Submit Dataproc Batch Job
+
+on:
+  push:
+    branches:
+      - main  # Set the branch where this action should run
+  workflow_dispatch:  # Allows you to run this workflow manually from the Actions tab
+
+jobs:
+  submit-dataproc-job:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Google Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        version: 'latest'
+        project_id: ${{ secrets.GCP_SA_EMAIL }}
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+        export_default_credentials: true
+
+    - name: Submit Dataproc Batch
+      run: |
+        gcloud dataproc batches submit pyspark gs://dataproc-practice-bucket-1/main_job.py \
+          --project slot-112 \
+          --region us-east1 \
+          --batch batch-53c0 \
+          --version 2.2 \
+          --subnet subnet1
+
