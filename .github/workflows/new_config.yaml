@@ -21,6 +21,7 @@ jobs:
       uses: google-github-actions/auth@v2
       with:
         project_id: ${{ secrets.GCP_SA_EMAIL }}
+        workload_identity_provider: 'projects/775224453412/locations/global/workloadIdentityPools/powerbi-monitoring-pool/subject/SUBJECT_ATTRIBUTE_VALUE'
         service_account: ${{ secrets.GCP_SA_KEY }}
 
     - name: Submit Dataproc Batch
